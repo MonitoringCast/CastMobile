@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mega.robert.chromecastmoneymaker.util.Requests;
@@ -46,21 +47,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -85,16 +79,18 @@ public class CastActivity extends ActionBarActivity {
     private boolean mWaitingForReconnect;
     private String mSessionId;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 
-    public TextView textView;
+    public ArrayList<ChartLayout> chartLayouts = new ArrayList<ChartLayout>();
+    public LayoutAdapter adapter;
+    public ListView listView;
+
+
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cast);
-
-        textView = (TextView) findViewById(R.id.json_view);
 
         Button button = (Button) findViewById(R.id.edit_button);
         assert button != null;
@@ -119,6 +115,10 @@ public class CastActivity extends ActionBarActivity {
         super.onResume();
         setText();
         new RequestLayouts().execute();
+
+        adapter = new LayoutAdapter(CastActivity.this, chartLayouts);
+        listView = (ListView) findViewById(R.id.LayoutListView);
+        listView.setAdapter(adapter);
     }
 
     private void setText(){
@@ -438,41 +438,39 @@ public class CastActivity extends ActionBarActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(CastActivity.this, "Updating...", Toast.LENGTH_SHORT).show();
-//            stations.clear();
+            chartLayouts.clear();
         }
 
         @Override
         protected String doInBackground(String... arg0) {
             SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             final String rest_endpoint = "/rest/layout";
-            final String method = "GET";
             final String connect_url = prefs.getString("connect_url", "");
             final String username = prefs.getString("username", "");
             final String password = prefs.getString("password", "");
 
             Requests requests = new Requests(connect_url, username, password);
-            return requests.executeRequest(rest_endpoint, method);
+            final String response = requests.executeGetRequest(rest_endpoint);
 
-//            try{
-//                JsonParser parser = new JsonParser();
-//                JsonObject o = (JsonObject)parser.parse(response.toString());
-//                System.out.println(o);
-//                for (JsonElement record:o.getAsJsonArray("Data")) {
+            try{
 
-//                    Station station = new Station(((JsonObject) record).get("StationName").toString(),
-//                            ((JsonObject) record).get("Address").toString(),
-//                            ((JsonObject) record).get("OcuppiedSpots").toString(),
-//                            ((JsonObject) record).get("EmptySpots").toString(),
-//                            ((JsonObject) record).get("MaximumNumberOfBikes").toString(),
-//                            ((JsonObject) record).get("StatusType").toString(),
-//                            Double.parseDouble(((JsonObject) record).get("Longitude").toString()),
-//                            Double.parseDouble(((JsonObject) record).get("Latitude").toString()));
-//
-//                    stations.add(station);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+                JsonParser parser = new JsonParser();
+                JsonObject o = (JsonObject)parser.parse(response);
+                System.out.println(o);
+                for (JsonElement record:o.getAsJsonArray("user_layouts")) {
+                    JsonObject element = record.getAsJsonObject().getAsJsonObject("layout");
+
+                    ChartLayout chartLayout = new ChartLayout(element.get("name").toString(),
+                                                          element.get("columns").toString(),
+                                                          element.get("rows").toString());
+//                                                          ((JSONArray) record).get("name"));
+
+                    chartLayouts.add(chartLayout);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
 
         }
 
@@ -480,9 +478,7 @@ public class CastActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            textView.setText(result);
-
-//            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             Toast.makeText(CastActivity.this, "Updated", Toast.LENGTH_LONG).show();
 
         }

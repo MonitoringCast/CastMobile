@@ -33,7 +33,7 @@ public class Requests {
         this.password = password;
     }
 
-    public String executeRequest(String endpoint, String method) {
+    public String executeGetRequest(String endpoint) {
         StringBuilder response  = new StringBuilder();
 
         try {
@@ -44,7 +44,7 @@ public class Requests {
 
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod(method);
+            conn.setRequestMethod("GET");
             cred.put("user", username);
             cred.put("pass", password);
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -67,6 +67,7 @@ public class Requests {
         {
             e.printStackTrace();
         }
+
         return response.toString();
     }
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<com.github.mikephil.charting.charts.PieChart-->
+            <!--android:id="@+id/chart_id"-->
+            <!--android:layout_width="94dp"-->
+            <!--android:layout_height="92dp" />-->
+    <!--</LinearLayout>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvLayoutRows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ROWS"
+            style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+            android:layout_below="@+id/tvLayoutName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tvLayoutName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tvLayoutColumns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COLUMNS"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@+id/tvLayoutRows"
+            android:layout_alignLeft="@+id/tvLayoutName"
+            android:layout_alignStart="@+id/tvLayoutName" />
+    </RelativeLayout>
+</LinearLayout>

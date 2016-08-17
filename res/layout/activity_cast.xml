@@ -57,28 +57,9 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/holo_purple"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/json_view_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:padding="10dip"
-                android:textStyle="bold"
-                android:text="JSON DATA:"/>
-            <TextView
-                android:id="@+id/json_view"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:ellipsize="none"
-                android:maxLines="100"
-                android:scrollHorizontally="false"
-                android:textColor="@android:color/holo_purple"/>
-        </TableRow>
     </TableLayout>
     <LinearLayout
+        android:id="@+id/linear"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -92,5 +73,14 @@
             android:layout_weight="1"
             android:text="Edit" />
     </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutListView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linear" />
 
 </RelativeLayout>
