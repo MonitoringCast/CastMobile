@@ -459,10 +459,13 @@ public class CastActivity extends ActionBarActivity {
                 System.out.println(o);
                 for (JsonElement record:o.getAsJsonArray("user_layouts")) {
                     JsonObject element = record.getAsJsonObject().getAsJsonObject("layout");
+                    final String name = element.get("name").toString();
+                    final String rows = element.get("rows").toString();
+                    final String columns = element.get("columns").toString();
 
-                    ChartLayout chartLayout = new ChartLayout(element.get("name").toString(),
-                                                          element.get("columns").toString(),
-                                                          element.get("rows").toString());
+                    int iconID = getResources().getIdentifier("ic_" + rows + "x" + columns, "drawable", getPackageName());
+
+                    ChartLayout chartLayout = new ChartLayout(name, columns, rows, iconID);
 //                                                          ((JSONArray) record).get("name"));
 
                     chartLayouts.add(chartLayout);

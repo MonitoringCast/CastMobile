@@ -12,12 +12,14 @@ public class ChartLayout {
     public String name;
     public String columns;
     public String rows;
+    int iconID;
     public JSONArray elements;
 
-    public ChartLayout(String name, String columns, String rows) { //, JSONArray elements) {
+    public ChartLayout(String name, String columns, String rows, int iconID) { //, JSONArray elements) {
         this.name = name ;
         this.columns = columns;
         this.rows = rows;
+        this.iconID = iconID;
 //        this.elements = elements;
     }
 }

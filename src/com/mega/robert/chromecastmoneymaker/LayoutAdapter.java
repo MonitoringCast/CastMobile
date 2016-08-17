@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,10 +30,13 @@ public class LayoutAdapter extends ArrayAdapter<ChartLayout> {
         TextView name = (TextView) convertView.findViewById(R.id.tvLayoutName);
         TextView rows = (TextView) convertView.findViewById(R.id.tvLayoutRows);
         TextView columns = (TextView) convertView.findViewById(R.id.tvLayoutColumns);
+        ImageView icon = (ImageView) convertView.findViewById(R.id.icon_id);
 
         name.setText(chartLayout.name);
         rows.setText(chartLayout.rows);
         columns.setText(chartLayout.columns);
+
+        icon.setImageResource(chartLayout.iconID);
 
         return convertView;
     }
