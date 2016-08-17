@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mega.robert.chromecastmoneymaker.util.Requests;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -84,7 +85,7 @@ public class CastActivity extends ActionBarActivity {
     private boolean mWaitingForReconnect;
     private String mSessionId;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.UK);
 
     public TextView textView;
 
@@ -117,7 +118,7 @@ public class CastActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         setText();
-        new LoadMainActivity().execute();
+        new RequestLayouts().execute();
     }
 
     private void setText(){
@@ -431,8 +432,7 @@ public class CastActivity extends ActionBarActivity {
 
     }
 
-    private class LoadMainActivity extends AsyncTask<String,String,String> {
-        StringBuilder response  = new StringBuilder();
+    private class RequestLayouts extends AsyncTask<String,String,String> {
 
         @Override
         protected void onPreExecute() {
@@ -444,46 +444,19 @@ public class CastActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(String... arg0) {
             SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-            String rest_endpoint = "/rest/layout";
+            final String rest_endpoint = "/rest/layout";
+            final String method = "GET";
             final String connect_url = prefs.getString("connect_url", "");
             final String username = prefs.getString("username", "");
             final String password = prefs.getString("password", "");
 
-            try {
-                URL url = new URL(connect_url + rest_endpoint);
-                JSONObject cred = new JSONObject();
-                //TODO: change to https
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            Requests requests = new Requests(connect_url, username, password);
+            return requests.executeRequest(rest_endpoint, method);
 
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("GET");
-                cred.put("user", username);
-                cred.put("pass", password);
-                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                conn.setRequestProperty("X-CastMon-Auth", cred.toString());
-
-                int status = conn.getResponseCode();
-                System.out.println("Status:" + status);
-
-                String line;
-                BufferedReader reader = new BufferedReader(new
-                        InputStreamReader(conn.getInputStream()));
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-
-                conn.connect();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            try{
-                JsonParser parser = new JsonParser();
-                JsonObject o = (JsonObject)parser.parse(response.toString());
-                System.out.println(o);
+//            try{
+//                JsonParser parser = new JsonParser();
+//                JsonObject o = (JsonObject)parser.parse(response.toString());
+//                System.out.println(o);
 //                for (JsonElement record:o.getAsJsonArray("Data")) {
 
 //                    Station station = new Station(((JsonObject) record).get("StationName").toString(),
@@ -497,11 +470,10 @@ public class CastActivity extends ActionBarActivity {
 //
 //                    stations.add(station);
 //                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
-            return response.toString();
         }
 
         @Override
@@ -537,8 +509,6 @@ public class CastActivity extends ActionBarActivity {
             //print here the result
             return result.toString();
         }
-
-
     }
 
 }
