@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".CastActivity">
+    <TableLayout
+        android:id="@+id/table_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="10dip"
+            android:text="Url:" />
+        <EditText
+            android:id="@+id/connect_url"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_purple"
+            android:inputType="textUri"
+            android:hint="@string/hint_url"
+            android:imeActionLabel="@string/set_url"
+            android:textColorHint="@android:color/darker_gray"
+            android:ellipsize="end"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="10dip"
+            android:text="Username:" />
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_purple"
+            android:inputType="textUri"
+            android:hint="@string/hint_username"
+            android:imeActionLabel="@string/set_url"
+            android:textColorHint="@android:color/darker_gray"
+            android:ellipsize="end"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="10dip"
+            android:text="Password:" />
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_purple"
+            android:imeOptions="actionSend"
+            android:inputType="textPassword"
+            android:hint="@string/hint_password"
+            android:imeActionLabel="@string/set_url"
+            android:textColorHint="@android:color/darker_gray"
+            android:ellipsize="end"/>
+    </TableRow>
+    </TableLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:layout_below="@+id/table_form"
+        android:gravity="center">
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+</RelativeLayout>

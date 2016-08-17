@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Moneymaker</string>
+    <string name="app_id">D3D6D99E</string>
+    <string name="namespace">urn:x-cast:com.google.cast.sample.helloworld</string>
+    <string name="action_settings">Settings</string>
+    <string name="message_to_cast">Message to Cast&#8230;</string>
+    <string name="media_route_menu_title">Play on&#8230;</string>
+    <string name="instructions">Talk to me</string>#
+
+    <string name="set_url">Connect!</string>
+
+    <string name="hint_url">URI to the backend data source</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+
+    <string name="last_updated">Last updated:</string>
+
+</resources>
