@@ -458,7 +458,7 @@ public class CastActivity extends ActionBarActivity {
                 JsonObject o = (JsonObject)parser.parse(response);
                 System.out.println(o);
                 for (JsonElement record:o.getAsJsonArray("user_layouts")) {
-                    JsonObject element = record.getAsJsonObject().getAsJsonObject("layout");
+                    JsonObject element = record.getAsJsonObject();//.getAsJsonObject("layout");
                     final String name = element.get("name").toString();
                     final String rows = element.get("rows").toString();
                     final String columns = element.get("columns").toString();
