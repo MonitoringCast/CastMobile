@@ -115,6 +115,7 @@ public class CastActivity extends ActionBarActivity {
         super.onResume();
         setText();
         new RequestLayouts().execute();
+        new RequestWebSocket().execute();
 
         adapter = new LayoutAdapter(CastActivity.this, chartLayouts);
         listView = (ListView) findViewById(R.id.LayoutListView);
@@ -452,12 +453,12 @@ public class CastActivity extends ActionBarActivity {
             Requests requests = new Requests(connect_url, username, password);
             final String response = requests.executeGetRequest(rest_endpoint);
 
-            try{
+            try {
 
                 JsonParser parser = new JsonParser();
-                JsonObject o = (JsonObject)parser.parse(response);
+                JsonObject o = (JsonObject) parser.parse(response);
                 System.out.println(o);
-                for (JsonElement record:o.getAsJsonArray("user_layouts")) {
+                for (JsonElement record : o.getAsJsonArray("user_layouts")) {
                     JsonObject element = record.getAsJsonObject();//.getAsJsonObject("layout");
                     final String name = element.get("name").toString();
                     final String rows = element.get("rows").toString();
@@ -476,6 +477,8 @@ public class CastActivity extends ActionBarActivity {
             return response;
 
         }
+
+
 
         @Override
         protected void onPostExecute(String result) {
@@ -510,4 +513,76 @@ public class CastActivity extends ActionBarActivity {
         }
     }
 
+
+    private class RequestWebSocket extends AsyncTask<String,String,String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(CastActivity.this, "Updating WS...", Toast.LENGTH_SHORT).show();
+            chartLayouts.clear();
+        }
+
+        @Override
+        protected String doInBackground(String... arg0) {
+            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            final String rest_endpoint = "/rest/ws";
+            final String connect_url = prefs.getString("connect_url", "");
+            final String username = prefs.getString("username", "");
+            final String password = prefs.getString("password", "");
+
+            Requests requests = new Requests(connect_url, username, password);
+            final String response = requests.executeGetRequest(rest_endpoint);
+
+            try{
+
+                JsonParser parser = new JsonParser();
+                JsonObject o = (JsonObject)parser.parse(response);
+                System.out.println(o);
+                final String ws = o.get("websocket").toString();
+
+                Log.d(TAG,"ws: "+ws);
+                sendMessage(response);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(CastActivity.this, "Updated WS", Toast.LENGTH_LONG).show();
+
+        }
+
+        private String getQuery(Map<String, String> map)  throws UnsupportedEncodingException
+        {
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value, "UTF-8"));
+            }
+            //print here the result
+            return result.toString();
+        }
+    }
 }
