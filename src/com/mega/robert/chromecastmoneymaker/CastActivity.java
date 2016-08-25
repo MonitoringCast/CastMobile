@@ -475,10 +475,7 @@ public class CastActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
             return response;
-
         }
-
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -488,31 +485,7 @@ public class CastActivity extends ActionBarActivity {
             Toast.makeText(CastActivity.this, "Updated", Toast.LENGTH_LONG).show();
 
         }
-
-        private String getQuery(Map<String, String> map)  throws UnsupportedEncodingException
-        {
-            StringBuilder result = new StringBuilder();
-            boolean first = true;
-
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-
-                if (first)
-                    first = false;
-                else
-                    result.append("&");
-
-                String key = entry.getKey();
-                String value = entry.getValue();
-
-                result.append(URLEncoder.encode(key, "UTF-8"));
-                result.append("=");
-                result.append(URLEncoder.encode(value, "UTF-8"));
-            }
-            //print here the result
-            return result.toString();
-        }
     }
-
 
     private class RequestWebSocket extends AsyncTask<String,String,String> {
 
@@ -551,38 +524,12 @@ public class CastActivity extends ActionBarActivity {
 
         }
 
-
-
         @Override
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             adapter.notifyDataSetChanged();
             Toast.makeText(CastActivity.this, "Updated WS", Toast.LENGTH_LONG).show();
-
-        }
-
-        private String getQuery(Map<String, String> map)  throws UnsupportedEncodingException
-        {
-            StringBuilder result = new StringBuilder();
-            boolean first = true;
-
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-
-                if (first)
-                    first = false;
-                else
-                    result.append("&");
-
-                String key = entry.getKey();
-                String value = entry.getValue();
-
-                result.append(URLEncoder.encode(key, "UTF-8"));
-                result.append("=");
-                result.append(URLEncoder.encode(value, "UTF-8"));
-            }
-            //print here the result
-            return result.toString();
         }
     }
 }
